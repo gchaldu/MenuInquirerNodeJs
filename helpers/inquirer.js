@@ -1,4 +1,5 @@
 const inquirer = require('inquirer');
+const { validate } = require('uuid');
 require('colors')
 
 const preguntas = {
@@ -13,15 +14,6 @@ const preguntas = {
         { value: '5', name: `${'5.'.green} Completar Tarea`},
         { value: '6', name: `${'6.'.green} Borrar Tarea`},
         { value: '0', name: `${'0.'.green} Salir`}
-    ]
-}
-
-const pause = {
-    type: 'input',
-    name: 'enter',
-    message: `\nPresione ${'ENTER'.green}: para continuar\n`,
-    choices: [
-        'Presiono ENTER'
     ]
 }
 const inquirerMenu = async() => {
@@ -39,15 +31,42 @@ const inquirerMenu = async() => {
 
 }
 
+const leerImput = async(mensaje) =>
+{
+    const question = [
+        {
+            type: 'input', 
+            name: 'desc', 
+            message: mensaje,
+            validate( value ){
+                if(value.length === 0 )
+                {
+                    return 'Por favor ingrese un valor';
+                }
+                return true;
+            }
+        }
+    ];
+     const {desc} = await inquirer.prompt(question);
+     return desc;
+}
+
 const pausar = async() => {
 
-        const {enter} = await inquirer
-            .prompt(pause)
+    const questionPause = {
+        type: 'input',
+        name: 'enter',
+        message: `\nPresione ${'ENTER'.green}: para continuar\n`,
+    }
+    console.log('\n');
+    const {enter} = await inquirer
+        .prompt(questionPause)
 
-        return enter;
+    return enter;
 }
 
 module.exports = {
     inquirerMenu,
-    pausar
+    pausar,
+    leerImput
 }
