@@ -16,12 +16,52 @@ const preguntas = {
         { value: '0', name: `${'0.'.green} Salir`}
     ]
 }
+const listadoDeTareasABorrar = async (tareas=[]) =>{
+
+    const arregloOp = tareas.map((tarea, i) => {
+        const {id, desc} = tarea;
+        const idx = `${i + 1}`.green;
+        const op = { value: id , name: `${idx}. ${desc}` }
+        return op;
+    })
+
+    arregloOp.unshift({ value: '0', name: '0. '.green + 'Cancelar'})
+    const listadoTareas = {
+        type: 'list',
+        name: 'id',
+        message: '¿Qué tarea desea Borrar?',
+        choices: arregloOp
+    }
+
+    const {id} = await inquirer.prompt(listadoTareas);
+    return id;
+}
+
+const listadoDeTareasACompletar = async (tareas=[]) =>{
+
+    const arregloOp = tareas.map((tarea, i) => {
+        const {id, desc, completadoEn} = tarea;
+        const idx = `${i + 1}`.green;
+        const op = { value: id , name: `${idx}. ${desc}`, checked: (completadoEn) ? true : false }
+        return op;
+    })
+
+    const listadoTareas = {
+        type: 'checkbox',
+        name: 'ids',
+        message: '¿Qué tarea desea Completar?',
+        choices: arregloOp
+    }
+
+    const {ids} = await inquirer.prompt(listadoTareas);
+    return ids;
+}
+
 const inquirerMenu = async() => {
         console.clear();
         console.log('==================='.green);
         console.log('Seleccione un opción'.green);
         console.log('==================='.green);
-
 
         const {opcion} = await inquirer
             .prompt(
@@ -65,8 +105,25 @@ const pausar = async() => {
     return enter;
 }
 
+const confirmar = async(message) => {
+
+    const question = {
+        type: 'confirm',
+        name: 'ok',
+        message,
+    }
+    console.log('\n');
+    const {ok} = await inquirer
+        .prompt(question)
+
+    return ok;
+}
+
 module.exports = {
     inquirerMenu,
     pausar,
-    leerImput
+    leerImput,
+    listadoDeTareasABorrar,
+    confirmar,
+    listadoDeTareasACompletar
 }
