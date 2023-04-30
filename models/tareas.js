@@ -59,19 +59,14 @@ class Tareas {
     listarPendientesCompletadas(est = true) {
         console.log()
         let contador = 0;
-        this.listToArray.forEach(({ desc, completadoEn }, i) => {
-            const idx = `${i + 1}`.green;
+        this.listToArray.forEach(({ desc, completadoEn }) => {
             const description = `${desc}`.cyan;
             const estado = (completadoEn !== null) ? `Completada`.green : `Pendiente`.red;
 
             if ((est) && (completadoEn)) {
-
-
                 contador++;
                 console.log(`${contador.toString().green}. ${description} ${estado.green}`)
-
             } else if ((!est) && (!completadoEn)) {
-
                 contador++;
                 console.log(`${contador.toString().green}. ${description} ${estado.green}`)
 
