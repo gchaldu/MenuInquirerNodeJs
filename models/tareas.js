@@ -28,24 +28,22 @@ class Tareas {
     completarTarea(ids = []) {
         ids.forEach((id) => {
             const tarea = this._listado[id]
-            if(tarea.completadoEn === null)
-            {
+            if (tarea.completadoEn === null) {
                 tarea.completadoEn = new Date().toISOString();
             }
         });
 
-        this.listToArray.forEach (tarea=>{
-            if(!ids.includes(tarea.id))
-            {
-                this._listado[tarea.id].completadoEn=null;
+        this.listToArray.forEach(tarea => {
+            if (!ids.includes(tarea.id)) {
+                this._listado[tarea.id].completadoEn = null;
             }
         })
     }
 
     cargarArregloFromArray(tareasDB = []) {
-            tareasDB.forEach(tarea => {
-                this._listado[tarea.id] = tarea;
-            });
+        tareasDB.forEach(tarea => {
+            this._listado[tarea.id] = tarea;
+        });
     }
 
     listadoCompleto() {
@@ -58,25 +56,25 @@ class Tareas {
         })
     }
 
-    listarPendientesCompletadas(est=true) {
+    listarPendientesCompletadas(est = true) {
         console.log()
-        let contador=0;
+        let contador = 0;
         this.listToArray.forEach(({ desc, completadoEn }, i) => {
             const idx = `${i + 1}`.green;
             const description = `${desc}`.cyan;
             const estado = (completadoEn !== null) ? `Completada`.green : `Pendiente`.red;
 
-            if (est) {
-                if (completadoEn) 
-                {
-                    contador++;
-                    console.log(`${contador.toString().green}. ${description} ${estado.green}`)
-                }
-            } else {
-                if (!completadoEn){
-                    contador++;
-                    console.log(`${contador.toString().green}. ${description} ${estado.green}`)
-                }
+            if ((est) && (completadoEn)) {
+
+
+                contador++;
+                console.log(`${contador.toString().green}. ${description} ${estado.green}`)
+
+            } else if ((!est) && (!completadoEn)) {
+
+                contador++;
+                console.log(`${contador.toString().green}. ${description} ${estado.green}`)
+
             }
         });
     }
